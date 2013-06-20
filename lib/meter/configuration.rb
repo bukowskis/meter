@@ -12,10 +12,21 @@ module Meter
       @primary_backend = Backend.new
       @primary_backend.host = options[:primary_host] || default_host
       @primary_backend.port = options[:primary_port] || default_port
+      @primary_backend.namespace = options[:namespace] || default_namespace
       @secondary_backend = Backend.new
       @secondary_backend.host = options[:secondary_host] || default_host
       @secondary_backend.port = options[:secondary_port] || default_secondary_port
+      @secondary_backend.namespace = options[:namespace] || default_namespace
       @tags = options[:tags] || {}
+    end
+
+    def namespace=(new_namespace)
+      primary_backend.namespace = new_namespace
+      secondary_backend.namespace = new_namespace
+    end
+
+    def namespace
+      primary_backend.namespace
     end
 
     def primary_host
@@ -70,6 +81,10 @@ module Meter
 
     def default_secondary_port
       3333
+    end
+
+    def default_namespace
+      'meter'
     end
 
   end

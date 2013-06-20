@@ -45,6 +45,11 @@ describe Meter::Configuration do
         config.secondary_backend.host.should == '127.0.0.1'
       end
 
+      it 'has the default namespace' do
+        config.primary_backend.namespace.should == 'meter'
+        config.secondary_backend.namespace.should == 'meter'
+      end
+
       it 'has the default port' do
         config.primary_backend.port.should == 8125
         config.secondary_backend.port.should == 3333
