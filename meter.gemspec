@@ -17,8 +17,6 @@ Gem::Specification.new do |spec|
 
   spec.rdoc_options.concat ['--encoding',  'UTF-8']
 
-  spec.add_dependency('statsd-client')
-
   spec.add_development_dependency('rspec')
   spec.add_development_dependency('guard-rspec')
   spec.add_development_dependency('rb-fsevent')
