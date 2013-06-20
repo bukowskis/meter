@@ -5,24 +5,22 @@ require 'meter/configuration'
 module Meter
   extend self
 
-  def increment(key, delta = 1, options = {})
-    delta = delta.to_i
-    if delta > 1
-      primary.count key, delta, options
-    else
-      primary.increment key, options
-    end
+  def increment(key, options = {})
+    primary.increment key, options
   end
 
-  def increment!(key, delta = 1, options = {})
-    delta = delta.to_i
-    if delta > 1
-      primary.count key, delta, options
-      secondary.count key, delta, options
-    else
-      primary.increment key, options
-      secondary.increment key, options
-    end
+  def increment!(key, options = {})
+    primary.increment key, options
+    secondary.increment key, options
+  end
+
+  def count(key, delta, options = {})
+    primary.count key, delta, options
+  end
+
+  def count!(key, delta, options = {})
+    primary.count key, delta, options
+    secondary.count key, delta, options
   end
 
   def gauge(key, value, options = {})
