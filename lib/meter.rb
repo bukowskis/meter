@@ -27,6 +27,10 @@ module Meter
     primary.gauge key, value, options
   end
 
+  def histogram(key, value, options = {})
+    primary.histogram key, value, options
+  end
+
   private
 
   def primary

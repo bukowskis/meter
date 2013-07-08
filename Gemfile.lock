@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     meter (0.0.1)
-      statsd-client
 
 GEM
   remote: https://rubygems.org/
@@ -44,7 +43,6 @@ GEM
       diff-lcs (>= 1.1.3, < 2.0)
     rspec-mocks (2.13.1)
     slop (3.4.5)
-    statsd-client (0.0.8)
     thor (0.18.1)
 
 PLATFORMS
