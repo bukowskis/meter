@@ -14,6 +14,12 @@ module Meter
     secondary.increment key, options
   end
 
+  def increment_with_id(key_with_id, options = {})
+    key_without_id = key_with_id.split('.')[0 .. -2].join('.')
+    primary.increment key_without_id, options
+    secondary.increment key_with_id, options
+  end
+
   def count(key, delta, options = {})
     primary.count key, delta, options
   end
