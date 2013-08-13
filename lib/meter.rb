@@ -6,27 +6,19 @@ module Meter
   extend self
 
   def increment(key, options = {})
+    id = options.delete(:id)
     primary.increment key, options
-  end
-
-  def increment!(key, options = {})
-    primary.increment key, options
-    secondary.increment key, options
-  end
-
-  def increment_with_id(key_with_id, options = {})
-    key_without_id = key_with_id.split('.')[0 .. -2].join('.')
-    primary.increment key_without_id, options
-    secondary.increment key_with_id, options
+    if id
+      secondary.increment "#{key}.#{id}", options
+    end
   end
 
   def count(key, delta, options = {})
+    id = options.delete(:id)
     primary.count key, delta, options
-  end
-
-  def count!(key, delta, options = {})
-    primary.count key, delta, options
-    secondary.count key, delta, options
+    if id
+      secondary.count "#{key}.#{id}", delta, options
+    end
   end
 
   def gauge(key, value, options = {})
