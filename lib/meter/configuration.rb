@@ -84,7 +84,7 @@ module Meter
     end
 
     def default_namespace
-      'meter'
+      nil
     end
 
   end

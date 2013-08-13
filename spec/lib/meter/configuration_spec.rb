@@ -46,8 +46,8 @@ describe Meter::Configuration do
       end
 
       it 'has the default namespace' do
-        config.primary_backend.namespace.should == 'meter'
-        config.secondary_backend.namespace.should == 'meter'
+        config.primary_backend.namespace.should == nil
+        config.secondary_backend.namespace.should == nil
       end
 
       it 'has the default port' do

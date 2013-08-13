@@ -49,7 +49,7 @@ module Meter
 
     def namespace=(namespace) #:nodoc:
       @namespace = namespace
-      @prefix = "#{namespace}."
+      @prefix = "#{namespace}." if @namespace
     end
 
     def host=(host) #:nodoc:
