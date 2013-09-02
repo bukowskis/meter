@@ -14,7 +14,7 @@ module Meter
       @primary_backend.port = options[:primary_port] || default_port
       @primary_backend.namespace = options[:namespace] || default_namespace
       @secondary_backend = Backend.new
-      @secondary_backend.host = options[:secondary_host] || default_host
+      @secondary_backend.host = options[:secondary_host] || ENV['METER_SECONDARY_HOST'] || default_host
       @secondary_backend.port = options[:secondary_port] || default_secondary_port
       @secondary_backend.namespace = options[:namespace] || default_namespace
 
