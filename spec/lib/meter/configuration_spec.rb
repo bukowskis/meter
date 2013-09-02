@@ -52,7 +52,7 @@ describe Meter::Configuration do
 
       it 'has the default port' do
         config.primary_backend.port.should == 8125
-        config.secondary_backend.port.should == 3333
+        config.secondary_backend.port.should == 8126
       end
     end
 
