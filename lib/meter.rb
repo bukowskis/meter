@@ -30,7 +30,6 @@ module Meter
 
   def histogram(key, value, options = {})
     primary.histogram key, value, options
-    secondary.histogram key, value, options
   end
 
   private
