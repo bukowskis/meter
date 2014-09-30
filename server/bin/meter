@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+require 'bundler'
+Bundler.require :default
+require_relative '../lib/server'
+
+STDOUT.sync = true
+
+puts "Starting UDP server"
+EM.run do
+  server = UdpServer.new
+  server.run
+  Signal.trap("INT")  { puts "Stopping"; EventMachine.stop }
+  Signal.trap("TERM") { puts "Stopping"; EventMachine.stop }
+end
