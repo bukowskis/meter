@@ -54,7 +54,7 @@ end
 
 
 class UdpServer
-  def initialize(host = '127.0.0.1', port = '8126')
+  def initialize(host = '127.0.0.1', port = ENV['METER_PORT'])
     @host = host
     @port = port
   end
