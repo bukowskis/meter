@@ -1,13 +1,14 @@
 require 'influxdb'
+require 'active_support'
 
 class InfluxMiddleware
   def initialize(app)
     @app = app
+    @influxdb = influxdb = InfluxDB::Client.new ENV['INFLUXDB_DATABASE'], host: ENV['INFLUXDB_HOST'], username: ENV['INFLUXDB_USER'], password: ENV['INFLUXDB_PASSSWORD'], async: true
   end
 
   def call(env)
-    influxdb = InfluxDB::Client.new ENV['INFLUXDB_DATABASE'], host: ENV['INFLUXDB_HOST'], username: ENV['INFLUXDB_USER'], password: ENV['INFLUXDB_PASSSWORD']
-    influxdb.write_point env['name'], env.except('name')
+    @influxdb.write_point env['name'], env.except('name')
     @app.call(env)
   end
 end

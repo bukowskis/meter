@@ -1,12 +1,17 @@
 #!/usr/bin/env ruby
+require 'celluloid'
+require 'celluloid/autostart'
 require_relative '../lib/udp_listener'
+require_relative '../lib/pipeline'
 
 STDOUT.sync = true
 
 puts "Starting UDP listener"
-EM.run do
-  listener = UdpListener.new
-  listener.run
-  Signal.trap("INT")  { puts "Stopping"; EventMachine.stop }
-  Signal.trap("TERM") { puts "Stopping"; EventMachine.stop }
+
+pipeline = Pipeline.pool
+
+listener = UdpListener.new do |data|
+  pipeline.async.process(data)
 end
+
+sleep
