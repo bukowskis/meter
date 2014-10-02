@@ -31,7 +31,7 @@ module Meter
   end
 
   def log(key, data)
-    secondary.log(key, data)
+    meter.log(key, data)
   end
 
   private
@@ -46,6 +46,10 @@ module Meter
 
   def counter
     config.counter_backend
+  end
+
+  def meter
+    config.meter_backend
   end
 
 end

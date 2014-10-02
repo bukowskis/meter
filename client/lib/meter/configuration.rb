@@ -5,7 +5,7 @@ module Meter
   class Configuration
 
     attr_accessor :logger, :tags
-    attr_reader :primary_backend, :secondary_backend, :counter_backend
+    attr_reader :primary_backend, :secondary_backend, :counter_backend, :meter_backend
 
     def initialize(options={})
       @logger = options[:logger] || default_logger
@@ -23,6 +23,11 @@ module Meter
       @counter_backend.port = options[:counter_port] || default_counter_port
       @counter_backend.namespace = options[:namespace] || default_namespace
 
+      @meter_backend = Backend.new
+      @meter.host = options[:counter_host] || default_host
+      @meter_backend.port = options[:counter_port] || default_counter_port
+      @meter.namespace = options[:namespace] || default_namespace
+
       @tags = options[:tags] || {}
     end
 
@@ -30,6 +35,7 @@ module Meter
       primary_backend.namespace = new_namespace
       secondary_backend.namespace = new_namespace
       counter_backend.namespace = new_namespace
+      meter_backend.namespace = new_namespace
     end
 
     def namespace
@@ -42,6 +48,14 @@ module Meter
 
     def primary_port
       primary_backend.port
+    end
+
+    def secondary_host
+      secondary_backend.host
+    end
+
+    def secondary_port
+      secondary_backend.port
     end
 
     def secondary_host
@@ -92,6 +106,10 @@ module Meter
 
     def default_counter_port
       3333
+    end
+
+    def default_meter_port
+      8128
     end
 
     def default_namespace
