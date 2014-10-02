@@ -166,6 +166,11 @@ module Meter
       send_stats stat, value, :s, opts
     end
 
+    def log(stat, data = {})
+      data = data.merge(app: @namespace, name: stat)
+      send_to_socket data.to_json
+    end
+
     private
 
     def send_stats(stat, delta, type, opts={})
@@ -183,7 +188,7 @@ module Meter
       self.class.logger.debug { "Statsd: #{message}" } if self.class.logger
       @socket.send(message, 0, @host, @port)
     rescue => boom
-      self.class.logger.error { "Statsd: #{boom.class} #{boom}" } if self.class.logger
+      self.class.logger.error { "boom Statsd: #{boom.class} #{boom}" } if self.class.logger
       nil
     end
   end

@@ -1,14 +1,12 @@
 #!/usr/bin/env ruby
-require 'bundler'
-Bundler.require :default
-require_relative '../lib/server'
+require_relative '../lib/udp_listener'
 
 STDOUT.sync = true
 
-puts "Starting UDP server"
+puts "Starting UDP listener"
 EM.run do
-  server = UdpServer.new
-  server.run
+  listener = UdpListener.new
+  listener.run
   Signal.trap("INT")  { puts "Stopping"; EventMachine.stop }
   Signal.trap("TERM") { puts "Stopping"; EventMachine.stop }
 end

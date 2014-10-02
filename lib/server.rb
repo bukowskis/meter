@@ -1,6 +1,8 @@
 require 'active_support'
-require "eventmachine"
+require 'eventmachine'
+require 'influxdb'
 require 'logger'
+
 require_relative 'message_handler'
 
 class LoggingMiddleware

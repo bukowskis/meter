@@ -87,7 +87,7 @@ module Meter
     end
 
     def default_secondary_port
-      8126
+      8127
     end
 
     def default_counter_port
