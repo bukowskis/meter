@@ -24,9 +24,9 @@ module Meter
       @counter_backend.namespace = options[:namespace] || default_namespace
 
       @meter_backend = Backend.new
-      @meter.host = options[:counter_host] || default_host
-      @meter_backend.port = options[:counter_port] || default_counter_port
-      @meter.namespace = options[:namespace] || default_namespace
+      @meter_backend.host = options[:meter_host] || default_host
+      @meter_backend.port = options[:meter_port] || default_meter_port
+      @meter_backend.namespace = options[:namespace] || default_namespace
 
       @tags = options[:tags] || {}
     end
