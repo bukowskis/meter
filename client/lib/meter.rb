@@ -34,6 +34,10 @@ module Meter
     meter.log(key, data)
   end
 
+  def increment_and_log(key, data)
+    meter.increment_and_log(key, data)
+  end
+
   private
 
   def primary
