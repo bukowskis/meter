@@ -24,7 +24,10 @@ end
 
 RSpec.configure do |config|
   config.before do
+    Meter.reset!
     Meter.config.logger = nil
+    Meter.config.environment = :test
+    Meter.config.namespace = :rspec
   end
 
   config.after do
