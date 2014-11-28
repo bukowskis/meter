@@ -1,4 +1,5 @@
 require 'logger'
+require 'pathname'
 require 'meter/backend'
 
 module Meter
@@ -33,6 +34,7 @@ module Meter
       @meter_backend.port = options[:meter_port] || default_meter_port
       @meter_backend.namespace = options[:namespace] || default_namespace
       @meter_backend.environment = options[:environment] || default_environment
+      @meter_backend.log_dir = options[:meter_log_dir] || default_meter_log_dir
 
       @tags = options[:tags] || {}
     end
@@ -134,6 +136,11 @@ module Meter
       return ENV['RACK_ENV'] if ENV['RACK_ENV'].to_s != ''
       return ENV['NODE_CHEF_ENVIRONMENT'] if ENV['NODE_CHEF_ENVIRONMENT'].to_s != ''
       'unknown'
+    end
+
+    def default_meter_log_dir
+      return Rails.root.join('log') if defined?(Rails)
+      Pathname.pwd
     end
 
   end

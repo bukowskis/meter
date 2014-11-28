@@ -1,4 +1,6 @@
 require 'socket'
+require 'pathname'
+
 
 # Copy and paste from https://github.com/DataDog/dogstatsd-ruby/blob/master/lib/statsd.rb
 # Changes:
@@ -26,6 +28,8 @@ module Meter
 
     # A String describing the environment, useful to distinguish staging/production
     attr_reader :environment
+
+    attr_reader :log_dir
 
     # StatsD host. Defaults to 127.0.0.1.
     attr_accessor :host
@@ -65,6 +69,10 @@ module Meter
 
     def port=(port) #:nodoc:
       @port = port || 8125
+    end
+
+    def log_dir=(log_dir)
+      @log_dir = Pathname.new log_dir
     end
 
     # Sends an increment (count = 1) for the given stat to the statsd server.
@@ -175,8 +183,8 @@ module Meter
 
     def log(stat, data = {})
       data = { environment: environment }.merge data
-      data.merge! app: namespace, name: stat
-      send_to_socket data.to_json
+      data.merge! app: namespace, statname: stat
+      File.open(log_dir.join('application.json.log'), 'a') {|f| f.puts(data.to_json) }
     end
 
     def increment_and_log(stat, data = {})
