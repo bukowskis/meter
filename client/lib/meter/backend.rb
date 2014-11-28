@@ -24,6 +24,9 @@ module Meter
     # A namespace to prepend to all statsd calls.
     attr_reader :namespace
 
+    # A String describing the environment, useful to distinguish staging/production
+    attr_reader :environment
+
     # StatsD host. Defaults to 127.0.0.1.
     attr_accessor :host
 
@@ -50,6 +53,10 @@ module Meter
     def namespace=(namespace) #:nodoc:
       @namespace = namespace
       @prefix = "#{namespace}." if @namespace
+    end
+
+    def environment=(new_environment)
+      @environment = new_environment.to_s
     end
 
     def host=(host) #:nodoc:
@@ -167,8 +174,14 @@ module Meter
     end
 
     def log(stat, data = {})
-      data = data.merge(app: @namespace, name: stat)
+      data = { environment: environment }.merge data
+      data.merge! app: namespace, name: stat
       send_to_socket data.to_json
+    end
+
+    def increment_and_log(stat, data = {})
+      increment stat
+      log stat, data
     end
 
     private

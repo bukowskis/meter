@@ -9,24 +9,30 @@ module Meter
 
     def initialize(options={})
       @logger = options[:logger] || default_logger
+
       @primary_backend = Backend.new
       @primary_backend.host = options[:primary_host] || default_host
       @primary_backend.port = options[:primary_port] || default_port
       @primary_backend.namespace = options[:namespace] || default_namespace
+      @primary_backend.environment = options[:environment] || default_environment
+
       @secondary_backend = Backend.new
       @secondary_backend.host = options[:secondary_host] || ENV['METER_SECONDARY_HOST'] || default_host
       @secondary_backend.port = options[:secondary_port] || default_secondary_port
       @secondary_backend.namespace = options[:namespace] || default_namespace
+      @secondary_backend.environment = options[:environment] || default_environment
 
       @counter_backend = Backend.new
       @counter_backend.host = options[:counter_host] || default_host
       @counter_backend.port = options[:counter_port] || default_counter_port
       @counter_backend.namespace = options[:namespace] || default_namespace
+      @counter_backend.environment = options[:environment] || default_environment
 
       @meter_backend = Backend.new
       @meter_backend.host = options[:meter_host] || default_host
       @meter_backend.port = options[:meter_port] || default_meter_port
       @meter_backend.namespace = options[:namespace] || default_namespace
+      @meter_backend.environment = options[:environment] || default_environment
 
       @tags = options[:tags] || {}
     end
@@ -36,6 +42,13 @@ module Meter
       secondary_backend.namespace = new_namespace
       counter_backend.namespace = new_namespace
       meter_backend.namespace = new_namespace
+    end
+
+    def environment=(new_environment)
+      primary_backend.environment = new_environment
+      secondary_backend.environment = new_environment
+      counter_backend.environment = new_environment
+      meter_backend.environment = new_environment
     end
 
     def namespace
@@ -114,6 +127,13 @@ module Meter
 
     def default_namespace
       nil
+    end
+
+    def default_environment
+      return Rails.env if defined?(Rails)
+      return ENV['RACK_ENV'] if ENV['RACK_ENV'].to_s != ''
+      return ENV['NODE_CHEF_ENVIRONMENT'] if ENV['NODE_CHEF_ENVIRONMENT'].to_s != ''
+      'unknown'
     end
 
   end
