@@ -1,59 +1,37 @@
-require 'json'
-require 'meter/configuration'
+require 'meter/backends'
+require 'meter/configure'
+require 'trouble'
 
-# A generic wrapper for Statsd-like gauges and counters.
-#
 module Meter
-  extend self
 
-  def increment(key, options = {})
+  def self.increment(key, options = {})
     id = options.delete(:id)
-    primary.increment key, options
-    if id
-      counter.increment "#{key}.#{id}", options
-    end
+    backends.datadog.increment key, options
+    backends.counter.increment("#{key}.#{id}", options) if id
+
+  rescue => exception
+    Trouble.notify exception
   end
 
-  def count(key, delta, options = {})
-    id = options.delete(:id)
-    primary.count key, delta, options
-    if id
-      counter.count "#{key}.#{id}", delta, options
-    end
+  def self.gauge(key, value, options = {})
+    backends.datadog.gauge key, value, options
+
+  rescue => exception
+    Trouble.notify exception
   end
 
-  def gauge(key, value, options = {})
-    primary.gauge key, value, options
+  def self.histogram(key, value, options = {})
+    backends.datadog.histogram key, value, options
+
+  rescue => exception
+    Trouble.notify exception
   end
 
-  def histogram(key, value, options = {})
-    primary.histogram key, value, options
-  end
+  def self.log(key, data)
+    backends.heka.log key, data
 
-  def log(key, data)
-    meter.log(key, data)
-  end
-
-  def increment_and_log(key, data)
-    meter.increment_and_log(key, data)
-  end
-
-  private
-
-  def primary
-    config.primary_backend
-  end
-
-  def secondary
-    config.secondary_backend
-  end
-
-  def counter
-    config.counter_backend
-  end
-
-  def meter
-    config.meter_backend
+  rescue => exception
+    Trouble.notify exception
   end
 
 end
