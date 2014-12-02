@@ -1,6 +1,5 @@
 require 'meter/backends'
 require 'meter/configure'
-require 'trouble'
 
 module Meter
 
@@ -10,28 +9,28 @@ module Meter
     backends.counter.increment("#{key}.#{id}", options) if id
 
   rescue => exception
-    Trouble.notify exception
+    ::Meter.config.logger.error exception.inspect
   end
 
   def self.gauge(key, value, options = {})
     backends.datadog.gauge key, value, options
 
   rescue => exception
-    Trouble.notify exception
+    ::Meter.config.logger.error exception.inspect
   end
 
   def self.histogram(key, value, options = {})
     backends.datadog.histogram key, value, options
 
   rescue => exception
-    Trouble.notify exception
+    ::Meter.config.logger.error exception.inspect
   end
 
   def self.log(key, data)
     backends.heka.log key, data
 
   rescue => exception
-    Trouble.notify exception
+    ::Meter.config.logger.error exception.inspect
   end
 
 end
