@@ -1,7 +1,8 @@
 PATH
   remote: client
   specs:
-    meter (0.0.10)
+    meter (0.1.0)
+      trouble
 
 GEM
   remote: https://rubygems.org/
@@ -65,8 +66,10 @@ GEM
     slop (3.6.0)
     thor (0.19.1)
     thread_safe (0.3.4)
+    timecop (0.7.1)
     timers (4.0.1)
       hitimes
+    trouble (0.0.7)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
 
@@ -82,3 +85,4 @@ DEPENDENCIES
   meter!
   rb-fsevent
   rspec
+  timecop

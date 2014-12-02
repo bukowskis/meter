@@ -1,60 +1,150 @@
 require 'spec_helper'
-require 'meter/configuration'
 
-describe Meter::Configuration do
+describe Meter do
 
-  let(:logger) { double(:logger) }
-  let(:config)  { Meter.config }
+  let(:dummy)  { double(:dummy) }
+  let(:config) { Meter::Configuration.new }
 
-  before do
-    Meter.reset!
-  end
+  describe '#logger' do
+    context 'default' do
+      it 'is a native Ruby Logger instance' do
+        expect(config.logger).to be_instance_of ::Logger
+      end
 
-  describe '.config' do
-
-    describe '#logger' do
-      it 'is an STDOUT logger' do
-        expect(Logger).to receive(:new).with(STDOUT).and_return logger
-        expect(config.logger).to be logger
+      it 'logs to standard output' do
+        device = config.logger.instance_variable_get('@logdev')
+        expect(device.dev.inspect).to eq '#<IO:<STDOUT>>'
       end
 
       context 'with Rails' do
         before do
-          ensure_module :Rails
-          allow(Rails).to receive(:logger).and_return(logger)
+          stub_const 'Rails', double(:rails, logger: dummy)
         end
 
-        after do
-          Object.send(:remove_const, :Rails)
-        end
-
-        it 'is the Rails logger' do
-          expect(config.logger).to be Rails.logger
+        it 'is the Rails environment' do
+          expect(config.logger).to eq dummy
         end
       end
     end
 
-    describe '#primary_backend and #secondary_backend' do
-      it 'is a Backend' do
-        expect(config.primary_backend).to be_instance_of Meter::Backend
-        expect(config.secondary_backend).to be_instance_of Meter::Backend
+    context 'specifying a custom logger' do
+      before do
+        config.logger = dummy
       end
 
-      it 'has the default host' do
-        expect(config.primary_backend.host).to eq('127.0.0.1')
-        expect(config.secondary_backend.host).to eq('127.0.0.1')
-      end
-
-      it 'has the default namespace' do
-        expect(config.primary_backend.namespace).to eq(nil)
-        expect(config.secondary_backend.namespace).to eq(nil)
-      end
-
-      it 'has the default port' do
-        expect(config.primary_backend.port).to eq(8125)
-        expect(config.secondary_backend.port).to eq(8126)
+      it 'is the custom logger' do
+        expect(config.logger).to eq dummy
       end
     end
-
   end
+
+  describe '#namespace' do
+    context 'default' do
+      it 'is meter' do
+        expect(config.namespace).to eq :meter
+      end
+    end
+
+    context 'specifying a custom namespace' do
+      before do
+        config.namespace = dummy
+      end
+
+      it 'is the custom namespace' do
+        expect(config.namespace).to eq dummy
+      end
+    end
+  end
+
+  describe '#environment' do
+    context 'default' do
+      it 'is unknown' do
+        expect(config.environment).to eq 'unknown'
+      end
+
+      context 'with NODE_CHEF_ENVIRONMENT' do
+        before do
+          ENV['NODE_CHEF_ENVIRONMENT'] = 'chef_ftw'
+        end
+
+        it 'is derived from NODE_CHEF_ENVIRONMENT' do
+          expect(config.environment).to eq 'chef_ftw'
+        end
+
+        context 'with RACK_ENV' do
+          before do
+            ENV['RACK_ENV'] = 'rack_ftw'
+          end
+
+          it 'is derived from RACK_ENV' do
+            expect(config.environment).to eq 'rack_ftw'
+          end
+
+          context 'with Rails' do
+            before do
+              stub_const 'Rails', double(:rails, env: 'rails_ftw')
+            end
+
+            it 'is the Rails environment' do
+              expect(config.environment).to eq 'rails_ftw'
+            end
+          end
+        end
+      end
+    end
+
+    context 'specifying a custom environment' do
+      before do
+        config.environment = dummy
+      end
+
+      it 'is the custom environment' do
+        expect(config.environment).to eq dummy
+      end
+    end
+  end
+
+  describe '#log_dir' do
+    context 'default' do
+      it 'is /dev/null' do
+        expect(config.log_dir).to eq Pathname.new('/dev/null')
+      end
+    end
+
+    context 'specifying a custom log_dir' do
+      before do
+        config.log_dir = '/tmp/something'
+      end
+
+      it 'is the custom log_dir' do
+        expect(config.log_dir).to eq Pathname.new('/tmp/something')
+      end
+    end
+
+    context 'with a local log directory' do
+      before do
+        allow(::Pathname).to receive(:pwd).and_return Pathname.new('/tmp/meter')
+        FileUtils.makedirs '/tmp/meter/log'
+      end
+
+      after do
+        FileUtils.rmdir '/tmp/meter/log'
+      end
+
+      it 'is the local log directory' do
+        expect(config.log_dir).to eq Pathname.new('/tmp/meter/log')
+      end
+
+      context 'with Rails' do
+        before do
+          stub_const 'Rails', double(:rails, root: Pathname.new('/rails/ftw'))
+        end
+
+        it 'is the Rails log dir' do
+          expect(config.log_dir).to eq Pathname.new('/rails/ftw/log')
+        end
+      end
+    end
+  end
+
 end
