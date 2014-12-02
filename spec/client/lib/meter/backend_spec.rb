@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'timecop'
 
 describe Meter::Backend do
 
@@ -55,13 +56,21 @@ describe Meter::Backend do
   end
 
   describe '#log' do
+    before do
+      Timecop.freeze(Time.now)
+    end
+
+    after do
+      Timecop.return
+    end
+
     it 'writes to the logfile' do
-      expect(file).to receive(:puts).with '{"environment":"unknown","app":"meter","statname":"super.bowl"}'
+      expect(file).to receive(:puts).with %({"environment":"unknown","Timestamp":"#{Time.now}","app":"meter","statname":"super.bowl"})
       backend.log 'super.bowl'
     end
 
     it 'respects a custom namespace' do
-      expect(file).to receive(:puts).with '{"environment":"unknown","app":"apple","statname":"super.nice"}'
+      expect(file).to receive(:puts).with %({"environment":"unknown","Timestamp":"#{Time.now}","app":"apple","statname":"super.nice"})
       Meter.config.namespace = :apple
       backend.log 'super.nice'
     end
@@ -69,7 +78,7 @@ describe Meter::Backend do
     it 'logs the event' do
       allow(file).to receive(:puts)
       allow(Meter.config.logger).to receive(:debug).with(no_args()) do |&block|
-        expect(block.call).to eq 'Logging /dev/null/application.json.log - {:environment=>"unknown", :app=>:apple, :statname=>"super.bowl"}'
+        expect(block.call).to eq %(Logging /dev/null/application.json.log - {:environment=>"unknown", :Timestamp=>#{Time.now}, :app=>:apple, :statname=>"super.bowl"})
       end
       backend.log 'super.bowl'
     end
