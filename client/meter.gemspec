@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.name         = 'meter'
   spec.version      = Meter::VERSION::STRING
 
-  spec.files        = Dir['{bin,lib,man,test,spec}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
+  spec.files        = Dir['{bin,lib,man}/**/*', 'README*', 'LICENSE*'] & `git ls-files -z`.split("\0")
   spec.require_path = 'lib'
 
   spec.rdoc_options.concat ['--encoding',  'UTF-8']
