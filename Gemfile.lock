@@ -2,7 +2,6 @@ PATH
   remote: client
   specs:
     meter (0.1.0)
-      trouble
 
 GEM
   remote: https://rubygems.org/
@@ -69,7 +68,6 @@ GEM
     timecop (0.7.1)
     timers (4.0.1)
       hitimes
-    trouble (0.0.7)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
 
