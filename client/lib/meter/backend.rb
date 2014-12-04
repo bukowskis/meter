@@ -8,7 +8,7 @@ module Meter
 
     def initialize(host = '127.0.0.1', port = 8125)
       @host, @port = host, port
-      @prefix = nil
+      @prefix = "#{::Meter.config.namespace}."
       @socket = UDPSocket.new
     end
 
