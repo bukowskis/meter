@@ -26,7 +26,7 @@ module Meter
 
     def log(stat, data = {})
       data = { environment: ::Meter.config.environment, Timestamp: Time.now.strftime("%FT%H:%M:%S%:z") }.merge data
-      data.merge! app: ::Meter.config.namespace, statname: stat
+      data.merge! app: ::Meter.config.namespace, host: ::Meter.config.hostname, statname: stat
       ::Meter.config.logger.debug { "Logging #{log_file} - #{data}"}
       log_file.open('a') { |f| f.puts(JSON.dump data) }
     end
