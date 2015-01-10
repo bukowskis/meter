@@ -34,6 +34,11 @@ module Meter
       @log_dir = Pathname.new new_dir
     end
 
+    def hostname
+      @hostname ||= options[:hostname] || default_hostname
+    end
+    attr_writer :hostname
+
     private
 
     def default_logger
@@ -59,5 +64,10 @@ module Meter
       Pathname.new '/dev/null'
     end
 
+    def default_hostname
+      return File.read('/etc/me').strip       if File.readable?('/etc/me')
+      return File.read('/etc/hostname').strip if File.readable?('/etc/hostname')
+      `hostname -f`.strip
+    end
   end
 end
