@@ -65,6 +65,7 @@ describe Meter::Backend do
   describe '#log' do
     before do
       Timecop.freeze(Time.now)
+      Meter.config.hostname = 'testhost'
     end
 
     after do
@@ -72,12 +73,12 @@ describe Meter::Backend do
     end
 
     it 'writes to the logfile' do
-      expect(file).to receive(:puts).with %({"environment":"unknown","Timestamp":"#{Time.now.strftime("%FT%H:%M:%S%:z")}","app":"meter","statname":"super.bowl"})
+      expect(file).to receive(:puts).with %({"environment":"unknown","Timestamp":"#{Time.now.strftime("%FT%H:%M:%S%:z")}","app":"meter","host":"testhost","statname":"super.bowl"})
       backend.log 'super.bowl'
     end
 
     it 'respects a custom namespace' do
-      expect(file).to receive(:puts).with %({"environment":"unknown","Timestamp":"#{Time.now.strftime("%FT%H:%M:%S%:z")}","app":"apple","statname":"super.nice"})
+      expect(file).to receive(:puts).with %({"environment":"unknown","Timestamp":"#{Time.now.strftime("%FT%H:%M:%S%:z")}","app":"apple","host":"testhost","statname":"super.nice"})
       Meter.config.namespace = :apple
       backend.log 'super.nice'
     end
@@ -85,7 +86,7 @@ describe Meter::Backend do
     it 'logs the event' do
       allow(file).to receive(:puts)
       allow(Meter.config.logger).to receive(:debug).with(no_args()) do |&block|
-        expect(block.call).to eq %(Logging /dev/null/application.json.log - {:environment=>"unknown", :Timestamp=>"#{Time.now.strftime("%FT%H:%M:%S%:z")}", :app=>:apple, :statname=>"super.bowl"})
+        expect(block.call).to eq %(Logging /dev/null/application.json.log - {:environment=>"unknown", :Timestamp=>"#{Time.now.strftime("%FT%H:%M:%S%:z")}", :app=>:apple, :host=>"testhost", :statname=>"super.bowl"})
       end
       backend.log 'super.bowl'
     end
