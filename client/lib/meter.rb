@@ -6,7 +6,7 @@ module Meter
   def self.increment(key, options = {})
     id = options.delete(:id)
     backends.datadog.increment key, options
-    backends.counter.increment("#{key}.#{id}", options) if id
+    backends.counter.increment("#{::Meter.config.namespace}.#{key}.#{id}", options) if id
 
   rescue => exception
     ::Meter.config.logger.error exception.inspect
