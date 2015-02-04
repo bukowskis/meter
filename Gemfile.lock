@@ -1,7 +1,7 @@
 PATH
   remote: client
   specs:
-    meter (0.1.6)
+    meter (0.1.7)
 
 GEM
   remote: https://rubygems.org/

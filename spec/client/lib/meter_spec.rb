@@ -36,7 +36,7 @@ describe Meter do
       end
 
       it 'proxies to counter with ID' do
-        expect(counter).to receive(:increment).with('meter.my.key.123', {})
+        expect(counter).to receive(:increment).with("#{::Meter.config.namespace}.my.key.123", {})
         meter.increment 'my.key', id: 123
       end
 
