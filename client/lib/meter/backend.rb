@@ -8,7 +8,7 @@ module Meter
 
     def initialize(host = '127.0.0.1', port = 8125)
       @host, @port = host, port
-      @prefix = "#{::Meter.config.namespace}."
+
       @socket = UDPSocket.new
     end
 
@@ -43,8 +43,9 @@ module Meter
       return unless sample_rate == 1 or rand < sample_rate
       stat = stat.to_s.gsub('::', '.').tr(':|@', '_')
       rate = "|@#{sample_rate}" unless sample_rate == 1
-      tags = "|##{Array(options[:tags]).join(",")}" if options[:tags]
-      send_to_socket "#{@prefix}#{stat}:#{delta}|#{type}#{rate}#{tags}"
+      app_tag = ["app:#{::Meter.config.namespace}"]
+      tags = "|##{(Array(options[:tags]) + app_tag).join(",")}"
+      send_to_socket "#{stat}:#{delta}|#{type}#{rate}#{tags}"
     end
 
     def send_to_socket(message)

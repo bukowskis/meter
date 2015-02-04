@@ -15,19 +15,19 @@ describe Meter::Backend do
 
   describe '#increment' do
     it 'sends UDP' do
-      expect(socket).to receive(:send).with 'meter.my.nice.counter:1|c', 0, '127.0.0.1', 330033
+      expect(socket).to receive(:send).with 'my.nice.counter:1|c|#app:meter', 0, '127.0.0.1', 330033
       backend.increment 'my.nice.counter'
     end
 
     it 'logs the event' do
       allow(Meter.config.logger).to receive(:debug).with(no_args()) do |&block|
-        expect(block.call).to eq 'UDP 127.0.0.1:330033 - meter.my.beautiful.counter:1|c'
+        expect(block.call).to eq 'UDP 127.0.0.1:330033 - my.beautiful.counter:1|c|#app:meter'
       end
       backend.increment 'my.beautiful.counter'
     end
 
     it 'respects a custom namespace' do
-      expect(socket).to receive(:send).with 'custom_namespace.my.nice.counter:1|c', 0, '127.0.0.1', 330033
+      expect(socket).to receive(:send).with 'my.nice.counter:1|c|#app:custom_namespace', 0, '127.0.0.1', 330033
       Meter.config.namespace = :custom_namespace
       backend.increment 'my.nice.counter'
       Meter.config.namespace = nil
@@ -36,13 +36,13 @@ describe Meter::Backend do
 
   describe '#gauge' do
     it 'sends UDP' do
-      expect(socket).to receive(:send).with 'meter.my.nice.gauge:42|g', 0, '127.0.0.1', 330033
+      expect(socket).to receive(:send).with 'my.nice.gauge:42|g|#app:meter', 0, '127.0.0.1', 330033
       backend.gauge 'my.nice.gauge', 42
     end
 
     it 'logs the event' do
       allow(Meter.config.logger).to receive(:debug).with(no_args()) do |&block|
-        expect(block.call).to eq 'UDP 127.0.0.1:330033 - meter.my.beautiful.gauge:55|g'
+        expect(block.call).to eq 'UDP 127.0.0.1:330033 - my.beautiful.gauge:55|g|#app:meter'
       end
       backend.gauge 'my.beautiful.gauge', 55
     end
@@ -50,13 +50,13 @@ describe Meter::Backend do
 
   describe '#histogram' do
     it 'sends UDP' do
-      expect(socket).to receive(:send).with 'meter.my.nice.histogram:88|h|#one,two', 0, '127.0.0.1', 330033
+      expect(socket).to receive(:send).with 'my.nice.histogram:88|h|#one,two,app:meter', 0, '127.0.0.1', 330033
       backend.histogram 'my.nice.histogram', 88, tags: %w(one two)
     end
 
     it 'logs the event' do
       allow(Meter.config.logger).to receive(:debug).with(no_args()) do |&block|
-        expect(block.call).to eq 'UDP 127.0.0.1:330033 - meter.my.beautiful.histogram:25|h|#not an array but causes no errors'
+        expect(block.call).to eq 'UDP 127.0.0.1:330033 - my.beautiful.histogram:25|h|#not an array but causes no errors,app:meter'
       end
       backend.histogram 'my.beautiful.histogram', 25, tags: 'not an array but causes no errors'
     end
