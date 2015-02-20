@@ -2,6 +2,6 @@
 
 guard 'rspec', cmd: 'bundle exec rspec --fail-fast' do
   watch(%r{^spec/.+_spec\.rb$})
-  watch(%r{^client/lib/(.+)\.rb$})     { |m| "spec/client/lib/#{m[1]}_spec.rb" }
+  watch(%r{^clib/(.+)\.rb$})     { |m| "spec/lib/#{m[1]}_spec.rb" }
   watch('spec/spec_helper.rb')  { "spec" }
 end
