@@ -9,11 +9,14 @@ module Meter
 
       def initialize(host = '127.0.0.1', port = 8125)
         @host, @port = host, port
-        @socket = UDPSocket.new
       end
 
       def output_data(data)
-        @socket.send data, 0, self.host, self.port
+        socket.send data, 0, self.host, self.port
+      end
+
+      def socket
+        Thread.current["meter_socket_#{self.class.name}"] ||= UDPSocket.new
       end
 
     end
