@@ -1,6 +1,5 @@
 require 'logger'
 require 'pathname'
-require 'meter/backend'
 
 module Meter
   class Configuration

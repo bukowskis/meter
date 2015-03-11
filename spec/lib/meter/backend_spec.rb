@@ -50,15 +50,15 @@ describe Meter::Backend do
 
   describe '#histogram' do
     it 'sends UDP' do
-      expect(socket).to receive(:send).with 'my.nice.histogram:88|h|#one,two,app:meter', 0, '127.0.0.1', 330033
-      backend.histogram 'my.nice.histogram', 88, tags: %w(one two)
+      expect(socket).to receive(:send).with 'my.nice.histogram:88|h|#app:meter,category:example', 0, '127.0.0.1', 330033
+      backend.histogram 'my.nice.histogram', 88, tags: {category: 'example'}
     end
 
     it 'logs the event' do
       allow(Meter.config.logger).to receive(:debug).with(no_args()) do |&block|
-        expect(block.call).to eq 'UDP 127.0.0.1:330033 - my.beautiful.histogram:25|h|#not an array but causes no errors,app:meter'
+        expect(block.call).to eq 'UDP 127.0.0.1:330033 - my.beautiful.histogram:25|h|#app:meter'
       end
-      backend.histogram 'my.beautiful.histogram', 25, tags: 'not an array but causes no errors'
+      backend.histogram 'my.beautiful.histogram', 25
     end
   end
 
