@@ -24,6 +24,10 @@ module Meter
     end
     alias :track :increment
 
+    def log(key, log_data = {})
+      track key, data: log_data
+    end
+
     def gauge(key, value, sample_rate: 1, tags: {}, data: {})
       metric = Metric::Gauge.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
       send_metric_to_backends(metric)
