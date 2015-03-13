@@ -46,6 +46,7 @@ module Meter
     end
 
     def send_metric_to_backends(metric)
+      return unless should_sample? metric.sample_rate
       config.backends.each {|backend| backend.emit_metric(metric)}
       metric
     end

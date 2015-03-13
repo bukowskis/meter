@@ -32,10 +32,6 @@ module Meter
         @data = default_data.merge(new_data)
       end
 
-      def should_sample?
-        sample_rate == 1 or rand < sample_rate
-      end
-
       private
 
       def default_value
