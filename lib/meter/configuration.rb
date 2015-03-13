@@ -38,6 +38,11 @@ module Meter
     end
     attr_writer :hostname
 
+    def backends
+      @backends ||= []
+    end
+    attr_writer :backends
+
     private
 
     def default_logger
