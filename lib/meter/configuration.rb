@@ -1,6 +1,5 @@
 require 'logger'
 require 'pathname'
-require 'meter/backend'
 
 module Meter
   class Configuration
@@ -38,6 +37,11 @@ module Meter
       @hostname ||= options[:hostname] || default_hostname
     end
     attr_writer :hostname
+
+    def backends
+      @backends ||= []
+    end
+    attr_writer :backends
 
     private
 
