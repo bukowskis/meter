@@ -10,6 +10,8 @@ require 'meter/metric/counter'
 require 'meter/metric/gauge'
 require 'meter/metric/histogram'
 require 'meter/metric/timing'
+require 'meter/rails/middleware'
+require "meter/rails/railtie" if defined?(Rails::Railtie)
 
 module Meter
 
