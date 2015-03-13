@@ -13,28 +13,43 @@ require 'meter/metric/timing'
 
 module Meter
 
-  def self.increment(key, value: 1, sample_rate: 1, tags: {}, data: {})
-    metric = Metric::Counter.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
-    backends.each {|backend| backend.emit_metric(metric)}
-    metric
-  rescue => exception
-    ::Meter.config.logger.error exception.inspect
-  end
+  class << self
+    def increment(key, value: 1, sample_rate: 1, tags: {}, data: {})
+      metric = Metric::Counter.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
+      send_metric_to_backends(metric)
+    rescue => exception
+      ::Meter.config.logger.error exception.inspect
+    end
+    alias :track :increment
 
-  def self.gauge(key, value, sample_rate: 1, tags: {}, data: {})
-    metric = Metric::Gauge.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
-    backends.each {|backend| backend.emit_metric(metric)}
-    metric
-  rescue => exception
-    ::Meter.config.logger.error exception.inspect
-  end
+    def gauge(key, value, sample_rate: 1, tags: {}, data: {})
+      metric = Metric::Gauge.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
+      send_metric_to_backends(metric)
+    rescue => exception
+      ::Meter.config.logger.error exception.inspect
+    end
 
-  def self.histogram(key, value, sample_rate: 1, tags: {}, data: {})
-    metric = Metric::Histogram.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
-    backends.each {|backend| backend.emit_metric(metric)}
-    metric
-  rescue => exception
-    ::Meter.config.logger.error exception.inspect
-  end
+    def histogram(key, value, sample_rate: 1, tags: {}, data: {})
+      metric = Metric::Histogram.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
+      send_metric_to_backends(metric)
+    rescue => exception
+      ::Meter.config.logger.error exception.inspect
+    end
 
+    def timing(key, value, sample_rate: 1, tags: {}, data: {})
+      metric = Metric::Timing.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
+      send_metric_to_backends(metric)
+    rescue => exception
+      ::Meter.config.logger.error exception.inspect
+    end
+
+    def send_metric_to_backends(metric)
+      config.backends.each {|backend| backend.emit_metric(metric)}
+      metric
+    end
+
+    def should_sample?(sample_rate = 1)
+      sample_rate == 1 or rand < sample_rate
+    end
+  end
 end
