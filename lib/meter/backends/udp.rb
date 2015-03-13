@@ -7,7 +7,7 @@ module Meter
 
       attr_reader :host, :port
 
-      def initialize(host = '127.0.0.1', port = 8125)
+      def initialize(host: '127.0.0.1', port: 8125)
         @host, @port = host, port
       end
 
