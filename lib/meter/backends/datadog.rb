@@ -19,7 +19,7 @@ module Meter
       end
 
       def statsd_type(metric)
-        types = {counter: ':c', gauge: ':g', timing: ':ms', histogram: ':h'}
+        types = {counter: 'c', gauge: 'g', timing: 'ms', histogram: 'h'}
         types[metric.type]
       end
 
