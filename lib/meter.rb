@@ -52,7 +52,7 @@ module Meter
     end
 
     def should_sample?(sample_rate = 1)
-      sample_rate == 1 or rand < sample_rate
+      rand < sample_rate
     end
   end
 end
