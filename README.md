@@ -1,8 +1,6 @@
 # Meter
 
-BETA!
-
-A generic abstraction layer for fire and forgetting measurements via UDP.
+A generic abstraction layer for tracking metrics and other data via configurable backends.
 
 # Installation
 
@@ -12,13 +10,22 @@ gem install meter
 
 # Usage
 
+#### Configuration
+
+```ruby
+Meter.configure do |config|
+  config.namespace = 'my_app'
+  config.backends << Meter::Backends::Datadog.new
+  config.backends << Meter::Backends::JsonLog.new
+end
+
 #### Syntax
 
 ```ruby
-Meter.increment key, delta, options
+Meter.increment key, sample_rate: 0.5, tags: {}, data: {}
 ````
 
-#### Examples 
+#### Examples
 
 ```ruby
 Meter.increment 'my.key'
