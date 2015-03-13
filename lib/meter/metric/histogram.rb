@@ -1,17 +1,10 @@
 module Meter
   module Metric
-    class Counter < Meter::Metric::Base
+    class Histogram < Meter::Metric::Base
 
       def type
-        :counter
+        :histogram
       end
-
-      private
-
-      def default_value
-        1
-      end
-
     end
   end
 end

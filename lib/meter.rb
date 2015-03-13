@@ -7,6 +7,9 @@ require 'meter/configure'
 require 'meter/mdc'
 require 'meter/metric/base'
 require 'meter/metric/counter'
+require 'meter/metric/gauge'
+require 'meter/metric/histogram'
+require 'meter/metric/timing'
 
 module Meter
 
