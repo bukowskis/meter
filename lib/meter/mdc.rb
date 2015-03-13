@@ -10,7 +10,7 @@ module Meter
     end
 
     def self.clear!
-      Thread.current[:meter_mdc_tags] = []
+      Thread.current[:meter_mdc_tags] = {}
       Thread.current[:meter_mdc_data] = {}
     end
 
