@@ -1,7 +1,8 @@
 PATH
   remote: .
   specs:
-    meter (1.0.2)
+    meter (1.0.3)
+      useragent (~> 0.13.1)
 
 GEM
   remote: https://rubygems.org/
@@ -64,6 +65,7 @@ GEM
       hitimes
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
+    useragent (0.13.1)
 
 PLATFORMS
   ruby
