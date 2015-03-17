@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.require_path = 'lib'
 
   spec.rdoc_options.concat ['--encoding',  'UTF-8']
-
+  spec.add_runtime_dependency 'useragent', '~> 0.13.1'
   spec.add_development_dependency('rspec')
   spec.add_development_dependency('guard-rspec')
   spec.add_development_dependency('rb-fsevent')
