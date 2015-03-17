@@ -1,4 +1,6 @@
 require 'useragent'
+require 'locality'
+
 module Meter
   module Rails
     class Middleware
@@ -29,10 +31,11 @@ module Meter
       end
 
       def store_geoip_data(request)
-        return unless defined?(Locality)
         lookup = Locality::IP.new request.ip
         Meter::MDC.tags['geoip_city']    = lookup.city_name
         Meter::MDC.tags['geoip_country'] = lookup.country_name
+        Meter::MDC.data['geoip_lat']     = lookup.latitude
+        Meter::MDC.data['geoip_long']    = lookup.longitude
       end
     end
   end
