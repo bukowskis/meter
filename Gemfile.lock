@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    meter (1.0.6)
+    meter (1.0.7)
       locality (~> 1.0.4)
       useragent (~> 0.13.1)
 
