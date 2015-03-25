@@ -26,7 +26,9 @@ module Meter
         user_agent = UserAgent.parse(request.user_agent)
         Meter::MDC.tags['user_agent_name']     = user_agent.browser
         Meter::MDC.tags['user_agent_platform'] = user_agent.platform
+        Meter::MDC.tags['user_agent_bot']      = user_agent.bot?
         Meter::MDC.data['user_agent_version']  = "#{user_agent.browser}_#{user_agent.version}"
+
         Meter::MDC.data['user_agent']          = user_agent.to_s
       end
 
