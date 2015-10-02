@@ -20,7 +20,6 @@ ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*a
     action:      action,
     path:        payload[:path],
     params:      payload[:params].to_query,
-    user_id:     payload[:user].to_s,
     duration:    total_duration
   }
 
