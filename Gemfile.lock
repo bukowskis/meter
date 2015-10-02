@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    meter (1.0.8)
+    meter (1.0.9)
       locality (~> 1.0.5)
       useragent (~> 0.13.1)
 
@@ -30,7 +30,7 @@ GEM
     guard-rspec (4.3.1)
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
-    hashie (3.4.1)
+    hashie (3.4.2)
     hitimes (1.2.2)
     hive_geoip2 (0.1.2)
     i18n (0.6.11)
@@ -91,3 +91,6 @@ DEPENDENCIES
   rb-fsevent
   rspec
   timecop
+
+BUNDLED WITH
+   1.10.6
