@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     meter (1.0.9)
-      locality (~> 1.0.5)
+      locality (~> 1.0.6)
       useragent (~> 0.13.1)
 
 GEM
@@ -20,7 +20,7 @@ GEM
     diff-lcs (1.2.5)
     ffi (1.9.6)
     formatador (0.2.5)
-    geocoder (1.2.6)
+    geocoder (1.2.13)
     guard (2.9.0)
       formatador (>= 0.2.4)
       listen (~> 2.7)
@@ -30,24 +30,24 @@ GEM
     guard-rspec (4.3.1)
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
-    hashie (3.4.2)
+    hashie (3.4.3)
     hitimes (1.2.2)
-    hive_geoip2 (0.1.2)
     i18n (0.6.11)
     json (1.8.1)
     listen (2.8.3)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
-    locality (1.0.5)
+    locality (1.0.6)
       activesupport
-      geocoder (= 1.2.6)
+      geocoder (= 1.2.13)
       hashie
-      hive_geoip2 (= 0.1.2)
       i18n
+      maxminddb (= 0.1.8)
       operation
       trouble
     lumberjack (1.0.9)
+    maxminddb (0.1.8)
     method_source (0.8.2)
     minitest (5.4.3)
     operation (1.4.1)

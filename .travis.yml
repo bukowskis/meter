@@ -5,8 +5,6 @@ rvm: 2.1.5
 
 before_install:
   - cd $TRAVIS_BUILD_DIR/db && wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz && gunzip GeoLite2-City.mmdb.gz
-  - mkdir $TRAVIS_BUILD_DIR/tmp
-  - cd $TRAVIS_BUILD_DIR/tmp && wget https://github.com/maxmind/libmaxminddb/releases/download/1.0.0/libmaxminddb-1.0.0.tar.gz && tar xfv libmaxminddb-1.0.0.tar.gz && cd libmaxminddb-1.0.0 && ./configure && make && make check && sudo make install && sudo ldconfig
   - cd $TRAVIS_BUILD_DIR
 
 install: bundle install --deployment --jobs 4
