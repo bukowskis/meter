@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    meter (1.1.0)
-      locality (~> 1.0.6)
+    meter (1.1.1)
+      locality (~> 1.1.0)
       useragent (~> 0.16.3)
 
 GEM
@@ -30,7 +30,7 @@ GEM
     guard-rspec (4.3.1)
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
-    hashie (3.4.3)
+    hashie (3.4.6)
     hitimes (1.2.2)
     i18n (0.6.11)
     json (1.8.1)
@@ -38,7 +38,7 @@ GEM
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
-    locality (1.0.6)
+    locality (1.1.0)
       activesupport
       geocoder (= 1.2.13)
       hashie
@@ -79,7 +79,7 @@ GEM
     trouble (0.0.11)
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
-    useragent (0.16.3)
+    useragent (0.16.8)
 
 PLATFORMS
   ruby
@@ -93,4 +93,4 @@ DEPENDENCIES
   timecop
 
 BUNDLED WITH
-   1.10.6
+   1.12.5
