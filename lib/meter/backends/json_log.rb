@@ -5,15 +5,19 @@ module Meter
     class JsonLog < ::Meter::Backends::Base
 
       def self.supported_metrics
-        [:counter, :gauge, :timing, :histogram]
+        [:log]
       end
 
       def convert_to_backend_format(metric)
-        {statname: metric.name, metric_type: metric.type, metric_value: metric.value}.merge(metric.data).merge(metric.tags)
+        {
+          statname:    metric.name,
+          metric_type: metric.type,
+          metric_value: metric.value
+        }.merge(metric.data).merge(metric.tags)
       end
 
       def output_data(data)
-        log_file.open('a') { |f| f.puts(JSON.dump data) }
+        log_file.open('a') { |f| f.puts(JSON.dump(data)) }
       end
 
       private
