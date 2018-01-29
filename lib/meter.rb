@@ -9,6 +9,7 @@ require 'meter/metric/base'
 require 'meter/metric/counter'
 require 'meter/metric/gauge'
 require 'meter/metric/histogram'
+require 'meter/metric/log'
 require 'meter/metric/timing'
 require 'meter/rails/middleware'
 require "meter/rails/railtie" if defined?(Rails::Railtie)
@@ -22,11 +23,14 @@ module Meter
     rescue => exception
       ::Meter.config.logger.error exception.inspect
     end
-    alias :track :increment
 
-    def log(key, log_data = {})
-      track key, data: log_data
+    def log(key, tags: {}, data: {})
+      metric = Metric::Log.new(name: key, value: 1, sample_rate: 1, tags: tags, data: data)
+      send_metric_to_backends(metric)
+    rescue => exception
+      ::Meter.config.logger.error exception.inspect
     end
+    alias :track :log
 
     def gauge(key, value, sample_rate: 1, tags: {}, data: {})
       metric = Metric::Gauge.new(name: key, value: value, sample_rate: sample_rate, tags: tags, data: data)
