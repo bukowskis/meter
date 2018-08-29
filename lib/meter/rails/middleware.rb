@@ -10,9 +10,12 @@ module Meter
 
       def call(env)
         request = Rack::Request.new(env)
-        Meter::MDC.data['request_id'] = env['action_dispatch.request_id']
-        Meter::MDC.data['pid']        = Process.pid
-        Meter::MDC.data['ip']         = request.ip.presence || '?'
+        Meter::MDC.data['request_id']   = env['action_dispatch.request_id']
+        Meter::MDC.data['pid']          = Process.pid
+        Meter::MDC.data['ip']           = request.ip.presence || '?'
+        Meter::MDC.data['referer']      = request.referer
+        Meter::MDC.data['url']          = request.url
+        Meter::MDC.data['xhr']          = request.xhr
 
         store_user_agent_data(request)
         store_geoip_data(request)
