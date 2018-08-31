@@ -15,7 +15,7 @@ module Meter
         Meter::MDC.data['ip']           = request.ip.presence || '?'
         Meter::MDC.data['referer']      = request.referer
         Meter::MDC.data['url']          = request.url
-        Meter::MDC.data['xhr']          = request.xhr
+        Meter::MDC.data['xhr']          = request.xhr?
 
         store_user_agent_data(request)
         store_geoip_data(request)
