@@ -23,19 +23,5 @@ ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*a
     duration:    total_duration
   }
 
-  instrumented_layers = {
-    db_runtime:            :db_duration,
-    view_runtime:          :view_duration,
-    elasticsearch_runtime: :elasticsearch_duration
-  }
-
-  instrumented_layers.each do |layer, tag_value|
-    next unless payload.has_key? layer
-    duration = payload[layer].to_i
-    meter_data[tag_value] = duration
-    Meter.timing("request.layer_duration", duration, tags: meter_tags.merge(layer: tag_value))
-  end
-
-  Meter.timing "request.total_duration", total_duration, tags: meter_tags
-  Meter.track  "requests", tags: meter_tags, data: meter_data
+  Meter.log 'requests', tags: meter_tags, data: meter_data
 end
