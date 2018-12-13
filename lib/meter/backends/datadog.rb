@@ -5,7 +5,7 @@ module Meter
     class Datadog < ::Meter::Backends::Statsd
 
       def self.supported_metrics
-        [:log, :counter, :gauge, :timing, :histogram]
+        [:counter, :gauge, :timing, :histogram]
       end
 
       def convert_to_backend_format(metric)
@@ -19,7 +19,7 @@ module Meter
       end
 
       def statsd_type(metric)
-        types = {log: 'c', counter: 'c', gauge: 'g', timing: 'ms', histogram: 'h'}
+        types = {counter: 'c', gauge: 'g', timing: 'ms', histogram: 'h'}
         types[metric.type]
       end
 
