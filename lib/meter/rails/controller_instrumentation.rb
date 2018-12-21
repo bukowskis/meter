@@ -20,5 +20,5 @@ ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*a
     duration:    total_duration
   }
 
-  Meter.log 'requests', tags: meter_tags, data: meter_data
+  Meter.log 'requests', data: meter_data
 end
