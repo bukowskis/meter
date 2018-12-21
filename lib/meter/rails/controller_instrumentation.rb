@@ -4,19 +4,16 @@ ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*a
   controller  = payload[:controller]
   action      = payload[:action]
   format      = payload[:format] || 'all'
-  format      = "all" if format == "*/*"
+  format      = 'all' if format == '*/*'
   http_status = payload[:status]
 
   total_duration = event.duration.to_i
 
-  meter_tags = {
+  meter_data = {
     controller:  controller,
     format:      format,
     method:      payload[:method],
-    http_status: http_status
-  }
-
-  meter_data = {
+    http_status: http_status,
     action:      action,
     path:        payload[:path],
     params:      payload[:params].to_query,
