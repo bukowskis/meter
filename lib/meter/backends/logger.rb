@@ -14,7 +14,7 @@ module Meter
       end
 
       def output_data(data)
-        ::Meter.config.logger.info data
+        ::Meter.config.logger.info payload: data
       end
     end
   end
