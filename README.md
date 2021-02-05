@@ -18,6 +18,7 @@ Meter.configure do |config|
   config.backends << Meter::Backends::Datadog.new
   config.backends << Meter::Backends::JsonLog.new
 end
+```
 
 #### Syntax
 
