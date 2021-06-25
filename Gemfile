@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'activesupport', '4.1.6'
+gem 'activesupport', '6.1.4'
 
 group :development, :test do
   gemspec name: 'meter'
