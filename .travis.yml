@@ -1,8 +1,6 @@
 language: ruby
 rvm: 2.3.5
 before_install:
-- cd $TRAVIS_BUILD_DIR/db && wget http://geolite.maxmind.com/download/geoip/database/GeoLite2-City.mmdb.gz
-  && gunzip GeoLite2-City.mmdb.gz
 - cd $TRAVIS_BUILD_DIR
 - gem update bundler
 install: bundle install --jobs 4
@@ -12,6 +10,3 @@ cache:
 before_script:
 - unset RACK_ENV
 script: bundle exec rspec
-notifications:
-  flowdock:
-    secure: MMpQnoJ0m0vAVuQ+2T1i/i4eL6zSRmEma7cX6sCbbCcGVL9IAGsnC3UC2bMsO8pkadD5mXz9cX9JVRpzuto6DhWlvmSTw8zsHbjwEYsD5MlAkhApN2jq/AX3cLZmOTn6i2ZzrQnHhhaOgygnRWHaqT1sa7rQKlbrKOaRRKCFAGM=
